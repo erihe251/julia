@@ -331,7 +331,7 @@ already defined in `Main`. It can also be called directly to force reloading a m
 regardless of whether it has been loaded before (for example, when interactively developing
 libraries).
 
-Loads a source files, in the context of the `Main` module, on every active node, searching
+Loads a source file, in the context of the `Main` module, on every active node, searching
 standard locations for files. `require` is considered a top-level operation, so it sets the
 current `include` path but does not use it to search for files (see help for `include`).
 This function is typically used to load library code, and is implicitly called by `using` to
