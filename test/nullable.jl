@@ -174,40 +174,6 @@ end
 
 @test isnull(Nullable())
 
-# function isequal{S, T}(x::Nullable{S}, y::Nullable{T})
-for T in types
-    x0 = Nullable()
-    x1 = Nullable{T}()
-    x2 = Nullable{T}()
-    x3 = Nullable(zero(T))
-    x4 = Nullable(one(T))
-
-    @test isequal(x0, x1) === true
-    @test isequal(x0, x2) === true
-    @test isequal(x0, x3) === false
-    @test isequal(x0, x4) === false
-
-    @test isequal(x1, x1) === true
-    @test isequal(x1, x2) === true
-    @test isequal(x1, x3) === false
-    @test isequal(x1, x4) === false
-
-    @test isequal(x2, x1) === true
-    @test isequal(x2, x2) === true
-    @test isequal(x2, x3) === false
-    @test isequal(x2, x4) === false
-
-    @test isequal(x3, x1) === false
-    @test isequal(x3, x2) === false
-    @test isequal(x3, x3) === true
-    @test isequal(x3, x4) === false
-
-    @test isequal(x4, x1) === false
-    @test isequal(x4, x2) === false
-    @test isequal(x4, x3) === false
-    @test isequal(x4, x4) === true
-end
-
 # function =={S, T}(x::Nullable{S}, y::Nullable{T})
 for T in types
     x0 = Nullable()
@@ -277,6 +243,39 @@ for T in types
     x1.v = one(T)
     @test !isnull(x1.v)
     @test get(x1.v, one(T)) === one(T)
+end
+
+# function isequal(x::Nullable, y::Nullable)
+srand(1)
+for S in Union{Base.NullSafeTypes, BigInt, BigFloat}.types,
+    T in Union{Base.NullSafeTypes, BigInt, BigFloat}.types
+    u0 = zero(S)
+    u1 = one(S)
+    u2 = S <: Union{BigInt, BigFloat} ? S(rand(Int128)) : rand(S)
+    u3 = S <: AbstractFloat ? S(NaN) : u2
+
+    v0 = zero(T)
+    v1 = one(T)
+    v2 = T <: Union{BigInt, BigFloat} ? T(rand(Int128)) : rand(T)
+    v3 = T <: AbstractFloat ? T(NaN) : v2
+
+    for u in (u0, u1, u2), v in (v0, v1, v2)
+        @test isequal(Nullable(u), Nullable(v)) === isequal(u, v)
+
+        @test isequal(Nullable(u), Nullable(v, true)) === false
+        @test isequal(Nullable(u, true), Nullable(v)) === false
+        @test isequal(Nullable(u, true), Nullable(v, true)) === true
+
+        @test isequal(Nullable(u), Nullable{T}()) === false
+        @test isequal(Nullable{S}(), Nullable(v)) === false
+        @test isequal(Nullable{S}(), Nullable{T}()) === true
+
+        @test isequal(Nullable(u), Nullable()) === false
+        @test isequal(Nullable(), Nullable(v)) === false
+        @test isequal(Nullable{S}(), Nullable()) === true
+        @test isequal(Nullable(), Nullable{T}()) === true
+        @test isequal(Nullable(), Nullable()) === true
+    end
 end
 
 # issue #9462
