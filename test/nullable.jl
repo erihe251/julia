@@ -245,7 +245,7 @@ for T in types
     @test get(x1.v, one(T)) === one(T)
 end
 
-# function isequal(x::Nullable, y::Nullable)
+# Operators
 srand(1)
 for S in Union{Base.NullSafeTypes, BigInt, BigFloat}.types,
     T in Union{Base.NullSafeTypes, BigInt, BigFloat}.types
@@ -260,6 +260,7 @@ for S in Union{Base.NullSafeTypes, BigInt, BigFloat}.types,
     v3 = T <: AbstractFloat ? T(NaN) : v2
 
     for u in (u0, u1, u2), v in (v0, v1, v2)
+        # function isequal(x::Nullable, y::Nullable)
         @test isequal(Nullable(u), Nullable(v)) === isequal(u, v)
 
         @test isequal(Nullable(u), Nullable(v, true)) === false
@@ -275,6 +276,23 @@ for S in Union{Base.NullSafeTypes, BigInt, BigFloat}.types,
         @test isequal(Nullable{S}(), Nullable()) === true
         @test isequal(Nullable(), Nullable{T}()) === true
         @test isequal(Nullable(), Nullable()) === true
+
+        # function isless(x::Nullable, y::Nullable)
+        @test isless(Nullable(u), Nullable(v)) === isless(u, v)
+
+        @test isless(Nullable(u), Nullable(v, true)) === true
+        @test isless(Nullable(u, true), Nullable(v)) === false
+        @test isless(Nullable(u, true), Nullable(v, true)) === false
+
+        @test isless(Nullable(u), Nullable{T}()) === true
+        @test isless(Nullable{S}(), Nullable(v)) === false
+        @test isless(Nullable{S}(), Nullable{T}()) === false
+
+        @test isless(Nullable(u), Nullable()) === true
+        @test isless(Nullable(), Nullable(v)) === false
+        @test isless(Nullable{S}(), Nullable()) === false
+        @test isless(Nullable(), Nullable{T}()) === false
+        @test isless(Nullable(), Nullable()) === false
     end
 end
 
