@@ -96,6 +96,13 @@ typealias NullSafeTypes Union{NullSafeInts, NullSafeFloats}
 null_safe_op{S<:NullSafeTypes,
              T<:NullSafeTypes}(::typeof(isequal), ::Type{S}, ::Type{T}) = true
 
+"""
+    isequal(x::Nullable, y::Nullable)
+
+If neither `x` nor `y` is null, compares them according to their values
+(i.e. `isless(get(x), get(y))`). Else, returns `true` if both arguments are null,
+and `false` if one is null but not the other: nulls are considered equal.
+"""
 function isequal{S,T}(x::Nullable{S}, y::Nullable{T})
     if null_safe_op(isequal, S, T)
         (x.isnull & y.isnull) | (!x.isnull & !y.isnull & isequal(x.value, y.value))
@@ -108,6 +115,14 @@ isequal(x::Nullable{Union{}}, y::Nullable{Union{}}) = true
 isequal(x::Nullable{Union{}}, y::Nullable) = y.isnull
 isequal(x::Nullable, y::Nullable{Union{}}) = x.isnull
 
+"""
+    isless(x::Nullable, y::Nullable)
+
+If neither `x` nor `y` is null, compares them according to their values
+(i.e. `isless(get(x), get(y))`). Else, returns `true` if only `y` is null, and `false`
+otherwise: nulls are always considered greater than non-nulls, but not greater than
+another null.
+"""
 function isless{S,T}(x::Nullable{S}, y::Nullable{T})
     # NULL values are sorted last
     if null_safe_op(isless, S, T)
