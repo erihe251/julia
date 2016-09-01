@@ -466,7 +466,7 @@
 
    .. Docstring generated from Julia source
 
-   Convert a byte index ``i`` to a character index.
+   Convert a byte index ``i`` to a character index with respect to string ``s``\ .
 
 .. function:: chr2ind(s::AbstractString, i::Integer)
 
