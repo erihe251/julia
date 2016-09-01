@@ -132,7 +132,7 @@ Getting Around
 
    .. Docstring generated from Julia source
 
-   Creates a precompiled cache file for module (see help for :func:`require`\ ) and all of its dependencies. This can be used to reduce package load times. Cache files are stored in ``LOAD_CACHE_PATH[1]``\ , which defaults to ``~/.julia/lib/VERSION``\ . See :ref:`Module initialization and precompilation <man-modules-initialization-precompilation>` for important notes.
+   Creates a :ref:`man-modules-initialization-precompilation` for a module and all of its dependencies. This can be used to reduce package load times. Cache files are stored in ``LOAD_CACHE_PATH[1]``\ , which defaults to ``~/.julia/lib/VERSION``\ . See :ref:`Module initialization and precompilation <man-modules-initialization-precompilation>` for important notes.
 
 .. function:: __precompile__(isprecompilable::Bool=true)
 

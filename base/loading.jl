@@ -539,8 +539,9 @@ compilecache(mod::Symbol) = compilecache(string(mod))
 """
     Base.compilecache(module::String)
 
-Creates a precompiled cache file for module (see help for [`require`](:func:`require`)) and all of its
-dependencies. This can be used to reduce package load times. Cache files are stored in
+Creates a [precompiled cache file](:ref:`man-modules-initialization-precompilation`) for
+a module and all of its dependencies.
+This can be used to reduce package load times. Cache files are stored in
 `LOAD_CACHE_PATH[1]`, which defaults to `~/.julia/lib/VERSION`. See
 [Module initialization and precompilation](:ref:`Module initialization and precompilation <man-modules-initialization-precompilation>`)
 for important notes.
