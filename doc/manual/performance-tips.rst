@@ -134,8 +134,7 @@ diagnose problems and improve the performance of your code:
   be helpful in finding expressions that result in type uncertainty.
   See :ref:`man-code-warntype` below.
 
-- The `Lint <https://github.com/tonyhffong/Lint.jl>`_ and `TypeCheck
-  <https://github.com/astrieanna/TypeCheck.jl>`_ packages can also
+- The `Lint <https://github.com/tonyhffong/Lint.jl>`_ package can also
   warn you of certain types of programming errors.
 
 
